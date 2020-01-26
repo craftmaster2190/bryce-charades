@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "format": "prettier --write \"src/**/*.{js,ts}\""
+    "format": "prettier --write \"**/*.{js,ts,scss,html,json}\""
   },
   "husky": {
     "hooks": {
@@ -27,7 +27,9 @@
     "@angular/router": "~8.2.4",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "@ng-bootstrap/ng-bootstrap": "^2.0.0-alpha.0",
+    "bootstrap": "^4.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.3",

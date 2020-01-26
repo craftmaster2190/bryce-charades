@@ -2,3 +2,17 @@
 
 <p *ngIf="notSupported">{{ notSupported }}</p>
 
+<div *ngFor="let wordList of wordLists.wordLists">{{ wordList }}</div>
+<div>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="addListClick(addWordListContent)"
+  >
+    Add new WordList
+  </button>
+</div>
+
+<ng-template #addWordListContent>
+  Add Word List
+</ng-template>

@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+html,
+body {
   height: 100%;
-  background-color: rgb(129, 241, 241);
 }
 
 .center {
@@ -22,7 +22,7 @@ html, body {
   height: 300px;
 }
 .loading-ring:after {
-  content: " ";
+  content: ' ';
   display: block;
   border-radius: 50%;
   width: 0;
