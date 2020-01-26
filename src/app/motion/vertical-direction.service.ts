@@ -5,6 +5,5 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class VerticalDirectionService {
-
-  constructor(private readonly gyroscope: GyroscopeService) { }
+  constructor(private readonly gyroscope: GyroscopeService) {}
 }

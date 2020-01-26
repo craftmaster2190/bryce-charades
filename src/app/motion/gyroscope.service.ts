@@ -10,7 +10,7 @@ export interface GyroOrientation {
 }
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class GyroscopeService {
   public readonly supported: Promise<void>;
@@ -19,7 +19,7 @@ export class GyroscopeService {
   constructor() {
     this.supported = new Promise((resolve, reject) => {
       const searchInterval = setInterval(() => {
-        const appRoot = document.getElementById("app-root");
+        const appRoot = document.getElementById('app-root');
         if (appRoot == null) {
           return;
         }
@@ -29,19 +29,19 @@ export class GyroscopeService {
           onReady: () =>
             setTimeout(() => {
               const errorMessage = [
-                parallax.desktop ? "This is a Desktop" : null,
-                parallax.motionSupport ? null : "Motion is not supported",
+                parallax.desktop ? 'This is a Desktop' : null,
+                parallax.motionSupport ? null : 'Motion is not supported',
                 parallax.orientationSupport
                   ? null
-                  : "Orientation is not supported"
+                  : 'Orientation is not supported'
               ]
-                .filter(status => !!status)
-                .join(", ");
+                .filter((status) => !!status)
+                .join(', ');
               if (errorMessage) {
-                console.log("reject");
+                console.log('reject');
                 reject(errorMessage);
               } else {
-                console.log("resolve");
+                console.log('resolve');
                 resolve();
               }
             }, 100)

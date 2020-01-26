@@ -6,7 +6,9 @@ describe('VerticalDirectionService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: VerticalDirectionService = TestBed.get(VerticalDirectionService);
+    const service: VerticalDirectionService = TestBed.get(
+      VerticalDirectionService
+    );
     expect(service).toBeTruthy();
   });
 });
