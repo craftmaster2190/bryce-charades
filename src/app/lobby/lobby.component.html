@@ -1,0 +1,7 @@
+<h1>Bryce Charades</h1>
+
+<p *ngIf="notSupported; else lobby">{{notSupported}}</p>
+
+<ng-template #lobby>
+  Lobby is ready!
+</ng-template>
