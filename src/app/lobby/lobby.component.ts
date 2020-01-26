@@ -1,6 +1,8 @@
 import { GyroscopeService } from '../motion/gyroscope.service';
+import { VerticalDirectionService } from '../motion/vertical-direction.service';
 import { Component, OnInit } from '@angular/core';
-
+import { interval } from 'rxjs';
+import { throttle } from 'rxjs/operators';
 @Component({
   selector: 'app-lobby',
   templateUrl: './lobby.component.html',
@@ -12,8 +14,6 @@ export class LobbyComponent implements OnInit {
   constructor(private readonly gyroscope: GyroscopeService) {}
 
   ngOnInit() {
-    this.gyroscope.supported
-      .then(() => (this.notSupported = null))
-      .catch((err) => (this.notSupported = err));
+    this.notSupported = this.gyroscope.notSupportedMessage;
   }
 }

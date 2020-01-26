@@ -1,4 +1,3 @@
-import Parallax from 'parallax-js';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -9,46 +8,54 @@ export interface GyroOrientation {
   gamma: number;
 }
 
+export interface GyroMotion {
+  acceleration: DeviceMotionEventAcceleration;
+  rotationRate: DeviceMotionEventRotationRate;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class GyroscopeService {
-  public readonly supported: Promise<void>;
+  public readonly desktop = !navigator.userAgent.match(
+    /(iPhone|iPod|iPad|Android|BlackBerry|BB10|mobi|tablet|opera mini|nexus 7)/i
+  );
+  public readonly orientationSupport = !!(window as any).DeviceOrientationEvent;
+  public readonly layoutSupport =
+    !!window.screen && !!window.screen.orientation;
+  public readonly notSupportedMessage = [
+    this.desktop ? 'This is a Desktop' : null,
+    this.orientationSupport ? null : 'Orientation is not supported',
+    this.layoutSupport ? null : 'Layout is not supported'
+  ]
+    .filter((status) => !!status)
+    .join(', ');
   public readonly gyroOrientation = new Subject<GyroOrientation>();
+  public readonly layoutOrientation = new Subject<OrientationType>();
 
   constructor() {
-    this.supported = new Promise((resolve, reject) => {
-      const searchInterval = setInterval(() => {
-        const appRoot = document.getElementById('app-root');
-        if (appRoot == null) {
-          return;
-        }
-
-        clearInterval(searchInterval);
-        const parallax = new Parallax(appRoot, {
-          onReady: () =>
-            setTimeout(() => {
-              const errorMessage = [
-                parallax.desktop ? 'This is a Desktop' : null,
-                parallax.motionSupport ? null : 'Motion is not supported',
-                parallax.orientationSupport
-                  ? null
-                  : 'Orientation is not supported'
-              ]
-                .filter((status) => !!status)
-                .join(', ');
-              if (errorMessage) {
-                console.log('reject');
-                reject(errorMessage);
-              } else {
-                console.log('resolve');
-                resolve();
-              }
-            }, 100)
-        });
-        console.log(parallax);
-        (window as any).parallax = parallax;
-      }, 500);
-    });
+    if (this.orientationSupport) {
+      window.addEventListener(
+        'deviceorientation',
+        this.onDeviceOrientation,
+        true
+      );
+    }
+    if (this.layoutSupport) {
+      screen.orientation.addEventListener(
+        'change',
+        this.onScreenOrientationChange
+      );
+      setTimeout(() => this.onScreenOrientationChange(), 100);
+    }
   }
+
+  onDeviceOrientation = (event: DeviceOrientationEvent) => {
+    const { absolute, alpha, beta, gamma } = event;
+    this.gyroOrientation.next({ absolute, alpha, beta, gamma });
+  };
+
+  onScreenOrientationChange = () => {
+    this.layoutOrientation.next(screen.orientation.type);
+  };
 }
