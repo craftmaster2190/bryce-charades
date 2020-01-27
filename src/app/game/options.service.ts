@@ -12,7 +12,7 @@ export class OptionsService {
 
   getDefaultOptions(): Options {
     return {
-      seconds: 60,
+      seconds: 5,
       addTimeOnCorrect: 0
     };
   }

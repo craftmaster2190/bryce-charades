@@ -1,1 +1,12 @@
-<p>game works!</p>
+<div *ngIf="isEnded(); else activeGame">
+  <div *ngFor="let correct of gameService.game.correctWords">{{ correct }}</div>
+  <div *ngFor="let passed of gameService.game.passedWords">{{ passed }}</div>
+  <button type="button" class="btn btn-primary" (click)="goHome()">Home</button>
+</div>
+
+<ng-template #activeGame>
+  <p>{{ direction }} {{ timeRemaining }}</p>
+  <div class="center" *ngIf="isStarted()">
+    <p>{{ getWord() }}</p>
+  </div>
+</ng-template>

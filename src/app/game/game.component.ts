@@ -15,12 +15,14 @@ import { Subscription } from 'rxjs';
 })
 export class GameComponent implements OnInit, OnDestroy {
   direction: ScreenDirection;
-  currentWord: string;
   subscription: Subscription;
+  startTime = Date.now();
+  timeRemaining: number;
+  interval;
 
   constructor(
     private readonly verticalDirection: VerticalDirectionService,
-    private readonly gameService: GameService,
+    public readonly gameService: GameService,
     private readonly router: Router
   ) {}
 
@@ -29,6 +31,8 @@ export class GameComponent implements OnInit, OnDestroy {
       this.router.navigate(['lobby']);
       return;
     }
+
+    this.interval = setInterval(() => this.checkTime(), 200);
 
     this.subscription = this.verticalDirection.direction.subscribe(
       (direction) => {
@@ -48,13 +52,48 @@ export class GameComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
+  isStarted() {
+    return Date.now() - 5000 > this.startTime;
+  }
+
+  isEnded() {
+    return this.isStarted() && this.gameService.game.getSecondsRemaining() <= 0;
+  }
+
+  checkTime() {
+    if (this.isStarted()) {
+      this.gameService.game.start();
+      this.timeRemaining = this.gameService.game.getSecondsRemaining();
+    } else {
+      this.timeRemaining = Math.ceil(
+        (5000 - (Date.now() - this.startTime)) / 1000
+      );
+    }
+  }
+
+  getWord() {
+    return this.gameService.game.getCurrentWord();
+  }
+
+  goHome() {
+    this.gameService.endGame();
+    this.router.navigate(['lobby']);
   }
 
   accept() {
-    this.currentWord = this.gameService.game.accept();
+    if (this.isStarted() && !this.isEnded()) {
+      this.gameService.game.accept();
+    }
   }
 
   pass() {
-    this.currentWord = this.gameService.game.pass();
+    if (this.isStarted() && !this.isEnded()) {
+      this.gameService.game.pass();
+    }
   }
 }

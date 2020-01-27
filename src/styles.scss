@@ -15,6 +15,14 @@ body {
   text-align: center;
 }
 
+.loading-title::before {
+  content: 'Bryce Charades';
+}
+
+.loading-footer::before {
+  content: 'Only Chrome on Android is supported (so far)';
+}
+
 .loading-ring {
   display: inline-block;
   position: relative;

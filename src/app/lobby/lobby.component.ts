@@ -1,9 +1,11 @@
+import { GameService } from '../game/game.service';
 import { GyroscopeService } from '../motion/gyroscope.service';
 import { VerticalDirectionService } from '../motion/vertical-direction.service';
 import { WordListsService } from '../game/word-lists.service';
 import { Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 import { throttle } from 'rxjs/operators';
 @Component({
   selector: 'app-lobby',
@@ -18,6 +20,8 @@ export class LobbyComponent implements OnInit {
   constructor(
     private readonly gyroscope: GyroscopeService,
     public readonly wordLists: WordListsService,
+    private readonly gameService: GameService,
+    private readonly router: Router,
     private modalService: NgbModal
   ) {}
 
@@ -30,5 +34,10 @@ export class LobbyComponent implements OnInit {
       .open(content)
       .result.then(() => {})
       .catch(() => {});
+  }
+
+  startGame(wordList) {
+    this.gameService.createGame(wordList);
+    this.router.navigate(['game']);
   }
 }

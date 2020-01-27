@@ -2,7 +2,11 @@
 
 <p *ngIf="notSupported">{{ notSupported }}</p>
 
-<div *ngFor="let wordList of wordLists.wordLists">{{ wordList }}</div>
+<div *ngFor="let wordList of wordLists.wordLists">
+  <button type="button" class="btn btn-primary" (click)="startGame(wordList)">
+    {{ wordList }}
+  </button>
+</div>
 <div>
   <button
     type="button"

@@ -9,8 +9,8 @@ const shuffle = <T>(array: Array<T>) => {
 export class Game {
   private readonly words: Array<string>;
   private index = 0;
-  private correctWords = [];
-  private passedWords = [];
+  public readonly correctWords = [];
+  public readonly passedWords = [];
   private seconds: number;
   private startTime: number;
   constructor(words: Set<string>, private options: Options) {
@@ -19,7 +19,9 @@ export class Game {
   }
 
   start() {
-    this.startTime = Date.now();
+    if (this.startTime == null) {
+      this.startTime = Date.now();
+    }
   }
 
   getCurrentWord(): string {
